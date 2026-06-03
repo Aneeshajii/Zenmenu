@@ -95,7 +95,7 @@ body {
 
 @media (max-width: 768px) {
   .menu-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
   }
   
@@ -189,6 +189,12 @@ button:active, a:active, .interactive:active {
     transform: translateY(-4px) translateZ(0);
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
     background-color: #1a1a1f; /* Smooth hover state */
+  }
+  
+  /* Zoom out dishes slightly on desktop view */
+  .image-container img {
+    transform: scale(0.9) !important;
+    border-radius: 8px;
   }
 }
 
