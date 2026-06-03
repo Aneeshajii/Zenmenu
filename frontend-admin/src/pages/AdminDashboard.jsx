@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Plus, Edit, Trash2 } from 'lucide-react';
+import { LogOut, Plus, Edit, Trash2, Loader2 } from 'lucide-react';
+import imageCompression from 'browser-image-compression';
 
 const AdminDashboard = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ id: null, name: '', price: '', category: 'Starters', isAvailable: 1, image: null });
+  const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
   const token = localStorage.getItem('adminToken');
 
@@ -45,12 +47,28 @@ const AdminDashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSaving(true);
+    
+    let compressedImage = formData.image;
+    if (compressedImage && compressedImage.type.startsWith('image/')) {
+      const options = {
+        maxSizeMB: 0.15,
+        maxWidthOrHeight: 800,
+        useWebWorker: true
+      };
+      try {
+        compressedImage = await imageCompression(compressedImage, options);
+      } catch (error) {
+        console.error('Image compression error:', error);
+      }
+    }
+
     const data = new FormData();
     data.append('name', formData.name);
     data.append('price', formData.price);
     data.append('category', formData.category);
     if (formData.id) data.append('isAvailable', formData.isAvailable);
-    if (formData.image) data.append('image', formData.image);
+    if (compressedImage) data.append('image', compressedImage, compressedImage.name);
 
     const url = formData.id ? `https://zenmenu.onrender.com/api/menu/${formData.id}` : 'https://zenmenu.onrender.com/api/menu';
     const method = formData.id ? 'PUT' : 'POST';
@@ -68,6 +86,8 @@ const AdminDashboard = () => {
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -196,8 +216,10 @@ const AdminDashboard = () => {
             )}
 
             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-              <button type="button" onClick={() => setShowForm(false)} style={{ flex: 1, padding: '1rem', background: 'transparent', border: '1px solid #555', color: '#fff', borderRadius: '4px', cursor: 'pointer' }}>Cancel</button>
-              <button type="submit" className="btn-primary" style={{ flex: 1, padding: '1rem' }}>Save Item</button>
+              <button type="button" onClick={() => setShowForm(false)} disabled={isSaving} style={{ flex: 1, padding: '1rem', background: 'transparent', border: '1px solid #555', color: '#fff', borderRadius: '4px', cursor: isSaving ? 'not-allowed' : 'pointer', opacity: isSaving ? 0.5 : 1 }}>Cancel</button>
+              <button type="submit" className="btn-primary" disabled={isSaving} style={{ flex: 1, padding: '1rem', cursor: isSaving ? 'not-allowed' : 'pointer', opacity: isSaving ? 0.8 : 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {isSaving ? <><Loader2 size={16} className="spinner" style={{ marginRight: '8px', animation: 'spin 1s linear infinite' }} /> Saving...</> : 'Save Item'}
+              </button>
             </div>
           </form>
         </div>
