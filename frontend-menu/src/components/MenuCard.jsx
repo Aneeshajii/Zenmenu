@@ -11,8 +11,8 @@ const MenuCard = ({ item }) => {
             style={{ 
               width: '100%', 
               height: '100%', 
-              objectFit: item.name && item.name.toLowerCase().includes('black currant') ? 'contain' : 'cover',
-              transform: item.name && item.name.toLowerCase().includes('black currant') ? 'scale(0.85)' : 'none'
+              objectFit: item.category === 'Beverages' ? 'contain' : 'cover',
+              transform: item.category === 'Beverages' ? 'scale(0.95)' : 'none'
             }} 
           />
         ) : (
