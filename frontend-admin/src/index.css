@@ -1,0 +1,160 @@
+:root {
+  --primary: #d4af37; /* Gold */
+  --primary-hover: #b08d29;
+  --bg-dark: #0a0a0a;
+  --bg-card: rgba(30, 30, 30, 0.7);
+  --text-light: #f5f5f5;
+  --text-muted: #aaaaaa;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Glassmorphism */
+.glass {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.gold-text {
+  color: var(--primary);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: #000;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* --- Premium Interaction & Responsive Admin Styles --- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, a, .interactive {
+  transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              background-color 0.2s ease-out, 
+              color 0.2s ease-out, 
+              box-shadow 0.2s ease-out,
+              opacity 0.2s ease-out;
+  will-change: transform, opacity, background-color;
+  transform: translateZ(0); 
+}
+
+button:active, a:active, .interactive:active {
+  transform: scale(0.96) translateZ(0) !important;
+  opacity: 0.85; 
+}
+
+button, .btn-primary {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+  .responsive-table table, .responsive-table thead, .responsive-table tbody, .responsive-table th, .responsive-table td, .responsive-table tr {
+    display: block;
+  }
+  .responsive-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  .responsive-table tr {
+    border-bottom: 1px solid #333;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding-top: 0.5rem;
+  }
+  .responsive-table td {
+    border: none;
+    position: relative;
+    padding-left: 45% !important;
+    text-align: right;
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-height: 44px;
+  }
+  .responsive-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 1rem;
+    width: 40%;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .responsive-table td.img-cell {
+    padding-left: 1rem !important;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  .responsive-table td.img-cell:before {
+    display: none;
+  }
+  .responsive-table .action-btns {
+    justify-content: flex-end;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #333;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0 !important;
+  }
+  .form-row > div {
+    margin-bottom: 1rem;
+  }
+  
+  .admin-header h2 {
+    font-size: 1.3rem !important;
+  }
+  .admin-header button {
+    padding: 0.6rem !important;
+    font-size: 0.9rem;
+    min-height: 38px;
+  }
+}
