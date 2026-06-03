@@ -25,7 +25,7 @@ const MenuCard = ({ item }) => {
         <div>
           <h3 className="card-title" style={{ margin: '0 0 0.4rem 0', fontSize: '1rem', fontWeight: '500', color: 'var(--text-light)' }}>{item.name}</h3>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="price-container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span className="price-text" style={{ fontSize: '1.1rem', fontWeight: '600', color: 'var(--primary)' }}>₹{item.price}</span>
         </div>
       </div>

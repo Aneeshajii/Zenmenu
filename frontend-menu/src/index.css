@@ -111,12 +111,17 @@ body {
     padding: 0.5rem !important;
   }
   
+  .price-container {
+    justify-content: center !important;
+  }
+
   .card-title {
     font-size: 0.75rem !important;
     margin-bottom: 0.2rem !important;
     white-space: normal;
     word-wrap: break-word;
     line-height: 1.2;
+    text-align: center;
   }
   
   .card-desc {
