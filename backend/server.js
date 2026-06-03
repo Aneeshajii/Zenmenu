@@ -26,6 +26,11 @@ app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 app.use('/api/menu', menuRoutes);
 app.use('/api/auth', authRoutes);
 
+// Health check route for the root
+app.get('/', (req, res) => {
+    res.send('Zenmenu API is running! Please access the application through the Vercel frontend URL.');
+});
+
 const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
