@@ -19,7 +19,7 @@ const AdminDashboard = () => {
 
   const fetchMenu = async () => {
     try {
-      const res = await fetch('/api/menu/admin', {
+      const res = await fetch('https://zenmenu.onrender.com/api/menu/admin', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.status === 401) {
@@ -52,7 +52,7 @@ const AdminDashboard = () => {
     if (formData.id) data.append('isAvailable', formData.isAvailable);
     if (formData.image) data.append('image', formData.image);
 
-    const url = formData.id ? `/api/menu/${formData.id}` : '/api/menu';
+    const url = formData.id ? `https://zenmenu.onrender.com/api/menu/${formData.id}` : 'https://zenmenu.onrender.com/api/menu';
     const method = formData.id ? 'PUT' : 'POST';
 
     try {
@@ -74,7 +74,7 @@ const AdminDashboard = () => {
   const handleDelete = async (id) => {
     if (confirm('Are you sure you want to delete this item?')) {
       try {
-        await fetch(`/api/menu/${id}`, {
+        await fetch(`https://zenmenu.onrender.com/api/menu/${id}`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -136,7 +136,7 @@ const AdminDashboard = () => {
                 {menuItems.map(item => (
                   <tr key={item.id} style={{ borderBottom: '1px solid #222' }}>
                     <td data-label="Image" className="img-cell" style={{ padding: '1rem' }}>
-                      {item.image ? <img src={item.image} alt={item.name} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} /> : 'No image'}
+                      {item.image ? <img src={`https://zenmenu.onrender.com${item.image}`} alt={item.name} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} /> : 'No image'}
                     </td>
                     <td data-label="Name" style={{ padding: '1rem' }}>{item.name}</td>
                     <td data-label="Category" style={{ padding: '1rem' }}>{item.category}</td>

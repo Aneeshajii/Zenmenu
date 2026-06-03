@@ -14,7 +14,7 @@ const CustomerMenu = () => {
 
   const fetchMenu = async (category) => {
     try {
-      const url = category === 'All' ? '/api/menu' : `/api/menu/category/${category}`;
+      const url = category === 'All' ? 'https://zenmenu.onrender.com/api/menu' : `https://zenmenu.onrender.com/api/menu/category/${category}`;
       const res = await fetch(url);
       const data = await res.json();
       setMenuItems(data);
