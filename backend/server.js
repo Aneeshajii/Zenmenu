@@ -2,7 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const db = require('./db/database'); // Initialize DB
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, 'public/uploads');
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 const menuRoutes = require('./routes/menuRoutes');
 const authRoutes = require('./routes/authRoutes');
