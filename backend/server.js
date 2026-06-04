@@ -3,13 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
-const db = require('./db/database'); // Initialize DB
+const { connectDB } = require('./db/database');
 
-// Ensure uploads directory exists
-const uploadsDir = path.join(__dirname, 'public/uploads');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-}
+connectDB();
 
 const menuRoutes = require('./routes/menuRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -20,8 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files (images)
-app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
+// Static uploads no longer needed (using Cloudinary)
 
 app.use('/api/menu', menuRoutes);
 app.use('/api/auth', authRoutes);

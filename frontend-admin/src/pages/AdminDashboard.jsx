@@ -156,7 +156,7 @@ const AdminDashboard = () => {
                 {menuItems.map(item => (
                   <tr key={item.id} style={{ borderBottom: '1px solid #222' }}>
                     <td data-label="Image" className="img-cell" style={{ padding: '1rem' }}>
-                      {item.image ? <img src={`https://zenmenu.onrender.com${item.image}`} alt={item.name} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} /> : 'No image'}
+                      {item.image ? <img src={item.image.startsWith('http') ? item.image : `https://zenmenu.onrender.com${item.image}`} alt={item.name} style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '4px' }} /> : 'No image'}
                     </td>
                     <td data-label="Name" style={{ padding: '1rem' }}>{item.name}</td>
                     <td data-label="Category" style={{ padding: '1rem' }}>{item.category}</td>

@@ -6,7 +6,7 @@ const MenuCard = ({ item }) => {
       <div className="image-container" style={{ position: 'relative', height: '160px', width: '100%', backgroundColor: '#18181c' }}>
         {item.image ? (
           <img 
-            src={`https://zenmenu.onrender.com${item.image}`} 
+            src={item.image.startsWith('http') ? item.image : `https://zenmenu.onrender.com${item.image}`} 
             alt={item.name} 
             style={{ 
               width: '100%', 

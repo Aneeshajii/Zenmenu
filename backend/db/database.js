@@ -1,43 +1,54 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const dbPath = path.resolve(__dirname, 'database.sqlite');
-const db = new sqlite3.Database(dbPath, (err) => {
-    if (err) {
-        console.error('Error opening database', err.message);
-    } else {
-        console.log('Connected to the SQLite database.');
-        
-        db.run(`CREATE TABLE IF NOT EXISTS menu_items (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            price REAL NOT NULL,
-            category TEXT NOT NULL,
-            image TEXT,
-            type TEXT,
-            description TEXT,
-            isAvailable INTEGER DEFAULT 1
-        )`);
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI);
+        console.log('Connected to MongoDB Atlas');
 
-        db.run(`CREATE TABLE IF NOT EXISTS admins (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL
-        )`, async (err) => {
-            if (!err) {
-                // Seed a default admin if none exists
-                db.get(`SELECT * FROM admins WHERE username = 'admin'`, async (err, row) => {
-                    if (!row) {
-                        const salt = await bcrypt.genSalt(10);
-                        const hashedPassword = await bcrypt.hash('admin123', salt);
-                        db.run(`INSERT INTO admins (username, password) VALUES (?, ?)`, ['admin', hashedPassword]);
-                        console.log('Default admin created: admin / admin123');
-                    }
-                });
-            }
-        });
+        // Seed a default admin if none exists
+        const adminCount = await Admin.countDocuments({ username: 'admin' });
+        if (adminCount === 0) {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash('admin123', salt);
+            await Admin.create({ username: 'admin', password: hashedPassword });
+            console.log('Default admin created: admin / admin123');
+        }
+    } catch (err) {
+        console.error('MongoDB connection error:', err.message);
+        process.exit(1);
     }
+};
+
+// Define Schemas
+const menuItemSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    category: { type: String, required: true },
+    image: { type: String },
+    type: { type: String },
+    description: { type: String },
+    isAvailable: { type: Number, default: 1 }
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 });
 
-module.exports = db;
+// Map _id to id for frontend compatibility
+menuItemSchema.virtual('id').get(function() {
+    return this._id.toHexString();
+});
+
+const adminSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true }
+});
+
+adminSchema.virtual('id').get(function() {
+    return this._id.toHexString();
+});
+
+const MenuItem = mongoose.model('MenuItem', menuItemSchema);
+const Admin = mongoose.model('Admin', adminSchema);
+
+module.exports = { connectDB, MenuItem, Admin };
